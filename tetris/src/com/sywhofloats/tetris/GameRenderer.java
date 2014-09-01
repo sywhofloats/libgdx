@@ -14,13 +14,11 @@ import com.sywhofloats.tetris.objects.Tetromino;
 
 public class GameRenderer implements Disposable {
 	
-
     private static final int VIRTUAL_WIDTH = 576;
     private static final int VIRTUAL_HEIGHT = 768;
     
     private float scalingFactor = 1f;
     
-	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private GameController gameController;
 	private Stage stage = new Stage();
@@ -45,7 +43,6 @@ public class GameRenderer implements Disposable {
 		stage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false);
 		
 		batch = stage.getSpriteBatch();
-		camera = (OrthographicCamera) stage.getCamera();
 		
 		if(Gdx.app.getType() == ApplicationType.Android) {
 			scalingFactor = (float) Gdx.graphics.getWidth()/(float)VIRTUAL_WIDTH;
@@ -64,7 +61,6 @@ public class GameRenderer implements Disposable {
 		
 		for(int i = 0;i<=lines.get(0).length+1;i++){
 			renderBlock(Tetromino.BORDER,i*32,baseY);
-	
 		}
 		
 		for(int[] line:lines){
@@ -79,8 +75,6 @@ public class GameRenderer implements Disposable {
 			}
 			renderBlock(Tetromino.BORDER,x+32,baseY+y);
 		}
-		
-		
 		
 		if(gameController.getGameState()!=GameController.GAME_STATE_MENU){
 			y=700+baseY;
@@ -159,8 +153,6 @@ public class GameRenderer implements Disposable {
 	}
 	
 	public void resize (int width, int height) {
-		
-
 			Vector2 size = Scaling.fit.apply(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, width, height);
 	        int viewportX = (int)(width - size.x) / 2;
 	        int viewportY = (int)(height - size.y) / 2;
@@ -172,7 +164,7 @@ public class GameRenderer implements Disposable {
 				scalingFactor = (float) Gdx.graphics.getWidth()/(float)VIRTUAL_WIDTH;
 				Assets.instance.fonts.font.setScale(scalingFactor);
 			}
-
 	}
+	
 	@Override public void dispose () { }
 }

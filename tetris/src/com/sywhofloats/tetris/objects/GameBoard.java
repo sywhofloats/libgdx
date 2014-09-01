@@ -145,23 +145,6 @@ public class GameBoard {
 		}
 	}
 
-	private ArrayList<int[]> findCollisionsForMatrix(int testX, int testY, TetrominoMatrix matrix) {
-
-		ArrayList<int[]> resultList = new  ArrayList<>();
-
-		for(int y=0;y<4;y++){
-			for(int x=0;x<4;x++){
-				if(matrix.getMatrix()[y][x]!=0&&board[testY+y][testX+x]!=0){
-					// both the matrix and the board are non-zero == collision
-					resultList.add(new int[] {x,y});
-				}
-			}	
-		}
-		return resultList;
-
-	}
-
-
 	private boolean checkMatrixAllowedAtPosition(int testX, int testY, TetrominoMatrix tetMatrix) {
 
 		int[][] matrix=tetMatrix.getMatrix();
@@ -183,42 +166,6 @@ public class GameBoard {
 			}	
 		}
 		return true;
-	}
-
-
-	public boolean checkMatrixAllowedWithXShifting(Tetromino tet, TetrominoMatrix matrix){
-		int testX = tet.getX();
-
-		// shift within board confines
-		while(testX+matrix.getMaxX()>=BOARD_WIDTH){testX--;}
-		while(testX+matrix.getMinX()<0){testX++;}
-
-		// try shifting away from blocks 3 times
-
-		for(int i=0;i<3;i++){
-			// if we have gone outside the screen bounds, give up
-			if(testX+matrix.getMinX()<0||testX+matrix.getMaxX()>=BOARD_WIDTH){
-				return false;
-			}
-
-			// see if there are collisions
-			ArrayList<int[]> collisionList = findCollisionsForMatrix(testX,tet.getY(), matrix);
-
-			if(collisionList.size()>0){
-				if(collisionList.get(0)[0]<2) {
-					testX++;
-				} else {
-					testX--;
-				}
-			} else {
-				// this is actually the success case, update the tet position
-				tet.setX(testX);
-				return true;
-			}
-
-		}
-		// couldn't do it in 3 tries, give up
-		return false;
 	}
 	
 	public ArrayList<int[]> getCurrentLinesForRendering(boolean flashFilledLines) {
